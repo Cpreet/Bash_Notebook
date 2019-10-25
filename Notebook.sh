@@ -11,6 +11,9 @@ function usage {
 	echo -e "-h | --help   prints out this help file \n"
 	echo -e "-n | --new [templateName]    creates a new text file in the current directory"
 	echo -e "   templateName: makes a new file with the given template \n"
+	echo -e "-d | --delete [notebookName]   deletes the notbook \"notebookName.txt\" "
+	echo -e "-t | --template [templateName] opens the editor to make a template \"templateName\" "
+	echo -e "-i | --index  Indexs notebooks by Topic field"
 }
 
 function createNewFile {
