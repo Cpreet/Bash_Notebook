@@ -15,7 +15,9 @@ function usage {
 
 function createNewFile {
 	touch ./"$1".txt
-	
+	echo "NOTEBOOK" >> ./"$1".txt
+	cat Default.txt >> ./"$1".txt
+	nano "$1".txt
 }
 
 function deleteNotebook {
@@ -37,8 +39,30 @@ function deleteNotebook {
 }
 
 function createNewTemplate {
-	echo -e "\n Creating new template"
+	echo -e "\nCreating new template"
 	touch template.txt
+}
+
+function indexAllNotebooks {
+	echo -e "\nIndex: "
+	list=$(ls | grep .txt)
+
+	for val in ${list}
+	do
+		header=$(head -n 1 "$val")
+		compare="NOTEBOOK"
+		num=0
+# fix this 
+		if [ "$header" = "$compare" ]
+		then
+	 		list[$num]=$(cat "$val" | grep Topic: )
+			num=+
+		else
+			num=+
+		fi
+
+	done
+	echo $list
 }
 
 argument=$1
@@ -58,6 +82,9 @@ case ${argument} in
  -t | --template)
 	shift
 	createNewTemplate "$1"
+	;;
+ -i | --index)
+	indexAllNotebooks
 	;;
  *)
 	usage
