@@ -1,4 +1,3 @@
-%TopicOfTheNotebook%
-%Summary%
-"Explanation of the topic"
-%Summary%
+Topic: 
+Summary: 
+
