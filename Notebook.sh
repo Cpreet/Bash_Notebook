@@ -9,19 +9,29 @@
 function usage {
 	echo -e "Notebook.sh: create notes and search through them like a pro \n"
 	echo -e "-h | --help   prints out this help file \n"
-	echo -e "-n | --new [templateName]    creates a new text file in the current directory"
-	echo -e "   templateName: makes a new file with the given template \n"
+	echo -e "-n | --new [notebokName][templateName]    creates a new text file, \"notebookName\"in the current directory"
+	echo -e "   templateName: makes a new file with \"templateName\" template "
 	echo -e "-d | --delete [notebookName]   deletes the notbook \"notebookName.txt\" "
 	echo -e "-t | --template [templateName] opens the editor to make a template \"templateName\" "
-	echo -e "-i | --index  Indexs notebooks by Topic field"
+	echo -e "-i | --index  Indexes notebooks by Topic field \n"
 }
 
+# add does not exist case for template arguement
 function createNewFile {
-	touch ./"$1".txt
-	echo "NOTEBOOK" >> ./"$1".txt
-	cat Default.txt >> ./"$1".txt
-	nano "$1".txt
+	if  [ "$2" ];
+	then
+		touch ./"$1".txt
+		echo "NOTEBOOK" >> ./"$1".txt
+		cat "$2".txt >> ./"$1".txt
+		nano "$1".txt
+	else
+		touch ./"$1".txt
+		echo "NOTEBOOK" >> ./"$1".txt
+		cat Default.txt >> ./"$1".txt
+		nano "$1".txt
+	fi
 }
+
 
 function deleteNotebook {
 	echo -e "Do you really want to remove your Notebook ?"
@@ -43,7 +53,8 @@ function deleteNotebook {
 
 function createNewTemplate {
 	echo -e "\nCreating new template"
-	touch template.txt
+	touch "$1".txt
+	nano "$1".txt
 }
 
 function indexAllNotebooks {
@@ -55,13 +66,13 @@ function indexAllNotebooks {
 		header=$(head -n 1 "$val")
 		compare="NOTEBOOK"
 		num=0
-# fix this 
-		if [ "$header" = "$compare" ]
+# fix this
+		if [[ $header = $compare ]];
 		then
 	 		list[$num]=$(cat "$val" | grep Topic: )
-			num=+
+			num++
 		else
-			num=+
+			num++
 		fi
 
 	done
@@ -70,21 +81,22 @@ function indexAllNotebooks {
 
 argument=$1
 
+#if possible,add does not exist case in here
 case ${argument} in
  -h | --help)
 	usage
 	;;
  -n | --new)
 	shift
-	createNewFile "$1"
+	createNewFile "$@"
 	;;
  -d | --delete)
 	shift
-	deleteNotebook "$1"
+	deleteNotebook "$@"
 	;;
  -t | --template)
 	shift
-	createNewTemplate "$1"
+	createNewTemplate "$@"
 	;;
  -i | --index)
 	indexAllNotebooks
