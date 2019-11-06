@@ -16,7 +16,6 @@ function usage {
 	echo -e "-i | --index  Indexes notebooks by Topic field \n"
 }
 
-# add does not exist case for template arguement
 function createNewFile {
 	if  [ "$2" ];
 	then
@@ -60,28 +59,24 @@ function createNewTemplate {
 function indexAllNotebooks {
 	echo -e "\nIndex: "
 	list=$(ls | grep .txt)
+	num=0
 
 	for val in ${list}
 	do
 		header=$(head -n 1 "$val")
 		compare="NOTEBOOK"
-		num=0
-# fix this
 		if [[ $header = $compare ]];
 		then
-	 		list[$num]=$(cat "$val" | grep Topic: )
-			num++
+	 		echo $(cat "$val" | grep Topic: )
+			(( num++ ))
 		else
-			num++
+			(( num++ ))
 		fi
-
 	done
-	echo $list
 }
 
 argument=$1
 
-#if possible,add does not exist case in here
 case ${argument} in
  -h | --help)
 	usage
